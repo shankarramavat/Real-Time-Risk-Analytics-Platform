@@ -1,0 +1,106 @@
+# Real-Time Risk Analytics Platform
+
+A comprehensive real-time risk analytics platform for financial institutions to monitor counterparty risk, market exposure, and ensure compliance.
+
+## Overview
+
+This platform provides financial institutions with powerful tools to analyze and monitor risk in real-time. It combines traditional risk metrics with advanced AI-powered insights to give a complete picture of an organization's risk profile.
+
+### Key Features
+
+- **Real-time Risk Monitoring**: Track counterparty risk and market exposure in real-time
+- **Advanced Visualizations**: Interactive charts and graphs for risk analysis
+- **Compliance Checking**: Automated checks for AML, KYC, and sanctions compliance
+- **AI-Powered Insights**: Intelligent risk analysis using OpenAI
+- **Stress Testing**: Simulate extreme market conditions to assess portfolio resilience
+- **Market News Analysis**: Track and analyze relevant financial news
+- **Alerting System**: Get notified about critical risk events
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+- PostgreSQL database
+
+### Installation
+
+1. Clone this repository:
+```bash
+git clone https://github.com/yourusername/risk-analytics-platform.git
+cd risk-analytics-platform
+```
+
+2. Install required packages:
+```bash
+pip install -r requirements.txt
+```
+
+3. Set up environment variables:
+```bash
+# Database configuration
+export DATABASE_URL=postgresql://username:password@localhost:5432/riskdb
+
+# API Keys (optional but recommended for full functionality)
+export OPENAI_API_KEY=your_openai_api_key
+```
+
+4. Initialize the database:
+```bash
+python init_database.py
+```
+
+5. Run the application:
+```bash
+streamlit run app.py
+```
+
+## Streamlit Deployment
+
+To deploy this application on Streamlit Community Cloud:
+
+1. Push the code to a GitHub repository
+2. Go to [Streamlit Community Cloud](https://streamlit.io/cloud)
+3. Click "New app" and select your repository
+4. In the Advanced settings:
+   - Add your OPENAI_API_KEY as a secret
+   - Add your PostgreSQL database URL as DATABASE_URL
+5. Deploy and enjoy!
+
+## Configuration
+
+### Environment Variables
+
+- `DATABASE_URL`: PostgreSQL database connection string
+- `OPENAI_API_KEY`: OpenAI API key for AI-powered insights
+- `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`: Optional Twilio credentials for SMS notifications
+
+### Database Setup
+
+The application will automatically create necessary database tables and populate them with sample data for demonstration purposes. For production use, you should customize the database schema and data seeding according to your organization's needs.
+
+## Architecture
+
+The platform follows a modular architecture:
+
+- **Data Processing**: Extract and transform trade and market data for analysis
+- **Risk Analytics**: Calculate various risk metrics and detect anomalies
+- **Compliance Checker**: Automated regulatory compliance checks
+- **Visualization**: Interactive charts and graphs
+- **AI Insights**: Intelligent analysis of risk data
+- **Alert System**: Notification of risk events
+- **Database Layer**: Persistent storage of all data
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Financial risk management standard practices
+- OpenAI for providing the API for intelligent insights
+- Streamlit for the interactive web application framework
