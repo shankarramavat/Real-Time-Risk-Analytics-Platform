@@ -6,9 +6,14 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 from utils.data_generator import load_data
 from utils.compliance import validate_kyc_compliance, validate_aml_compliance, check_sanctions
+from utils.notification_service import get_notification_history
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Alerts", page_icon="🚨", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Risk Alerts & Notifications")
 

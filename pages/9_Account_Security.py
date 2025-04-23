@@ -15,9 +15,13 @@ from utils.account_security import (
     detect_account_takeover
 )
 from utils.notification_service import send_account_security_alert
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Account Security", page_icon="🔐", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Account Takeover (ATO) Detection")
 
@@ -510,75 +514,79 @@ with tabs[1]:
 with tabs[2]:
     st.header("Login History")
     
-    # Convert to DataFrame for display
-    login_df = pd.DataFrame(user_login_history)
-    
-    # Add filter controls
-    filter_col1, filter_col2, filter_col3 = st.columns(3)
-    
-    with filter_col1:
-        # Filter by success
-        success_filter = st.multiselect(
-            "Login Status",
-            options=[True, False],
-            default=[True, False],
-            format_func=lambda x: "Success" if x else "Failed"
-        )
-    
-    with filter_col2:
-        # Filter by date range
-        if "timestamp" in login_df.columns:
-            login_df["timestamp"] = pd.to_datetime(login_df["timestamp"])
-            min_date = login_df["timestamp"].min().date()
-            max_date = login_df["timestamp"].max().date()
-            
-            date_range = st.date_input(
-                "Date Range",
-                value=(min_date, max_date),
-                min_value=min_date,
-                max_value=max_date
+    if user_login_history:
+        # Convert to DataFrame for display
+        login_df = pd.DataFrame(user_login_history)
+        
+        # Add filter controls
+        filter_col1, filter_col2, filter_col3 = st.columns(3)
+        
+        with filter_col1:
+            # Filter by success
+            success_filter = st.multiselect(
+                "Login Status",
+                options=[True, False],
+                default=[True, False],
+                format_func=lambda x: "Success" if x else "Failed"
             )
-    
-    with filter_col3:
-        # Filter by risk level
-        risk_level = st.multiselect(
-            "Risk Level",
-            options=["Low", "Medium", "High"],
-            default=["Low", "Medium", "High"]
-        )
         
-        # Map risk levels to score ranges
-        risk_map = {
-            "Low": (0.0, 0.4),
-            "Medium": (0.4, 0.7),
-            "High": (0.7, 1.0)
-        }
-    
-    # Apply filters
-    filtered_df = login_df.copy()
-    
-    if success_filter:
-        filtered_df = filtered_df[filtered_df["success"].isin(success_filter)]
-    
-    if "timestamp" in filtered_df.columns and len(date_range) == 2:
-        start_date, end_date = date_range
-        filtered_df = filtered_df[
-            (filtered_df["timestamp"].dt.date >= start_date) & 
-            (filtered_df["timestamp"].dt.date <= end_date)
-        ]
-    
-    if risk_level:
-        risk_conditions = []
-        for level in risk_level:
-            low, high = risk_map[level]
-            risk_conditions.append((filtered_df["risk_score"] >= low) & (filtered_df["risk_score"] < high))
+        with filter_col2:
+            # Filter by date range
+            if "timestamp" in login_df.columns:
+                login_df["timestamp"] = pd.to_datetime(login_df["timestamp"])
+                min_date = login_df["timestamp"].min().date()
+                max_date = login_df["timestamp"].max().date()
+                
+                date_range = st.date_input(
+                    "Date Range",
+                    value=(min_date, max_date),
+                    min_value=min_date,
+                    max_value=max_date
+                )
         
-        if risk_conditions:
-            risk_mask = risk_conditions[0]
-            for condition in risk_conditions[1:]:
-                risk_mask = risk_mask | condition
+        with filter_col3:
+            # Filter by risk level
+            risk_level = st.multiselect(
+                "Risk Level",
+                options=["Low", "Medium", "High"],
+                default=["Low", "Medium", "High"]
+            )
             
-            filtered_df = filtered_df[risk_mask]
+            # Map risk levels to score ranges
+            risk_map = {
+                "Low": (0.0, 0.4),
+                "Medium": (0.4, 0.7),
+                "High": (0.7, 1.0)
+            }
+        
+        # Apply filters
+        filtered_df = login_df.copy()
+        
+        if success_filter:
+            filtered_df = filtered_df[filtered_df["success"].isin(success_filter)]
+        
+        if "timestamp" in filtered_df.columns and len(date_range) == 2:
+            start_date, end_date = date_range
+            filtered_df = filtered_df[
+                (filtered_df["timestamp"].dt.date >= start_date) & 
+                (filtered_df["timestamp"].dt.date <= end_date)
+            ]
+        
+        if risk_level:
+            risk_conditions = []
+            for level in risk_level:
+                low, high = risk_map[level]
+                risk_conditions.append((filtered_df["risk_score"] >= low) & (filtered_df["risk_score"] < high))
+            
+            if risk_conditions:
+                risk_mask = risk_conditions[0]
+                for condition in risk_conditions[1:]:
+                    risk_mask = risk_mask | condition
+                
+                filtered_df = filtered_df[risk_mask]
+    else:
+        st.info("No login history available for this user.")
+        filtered_df = pd.DataFrame()
     
     # Display filtered login history
     if len(filtered_df) > 0:
