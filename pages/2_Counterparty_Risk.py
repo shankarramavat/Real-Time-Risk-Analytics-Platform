@@ -168,8 +168,22 @@ with col2:
     
     # Generate sample risk values (in a real app, these would come from a detailed risk model)
     np.random.seed(int(counterparty_id))  # Use counterparty ID as seed for reproducibility
+    
+    # Map credit ratings to numerical scores
+    credit_rating_map = {
+        'AAA': 0.1, 'AA+': 0.15, 'AA': 0.2, 'AA-': 0.25,
+        'A+': 0.3, 'A': 0.35, 'A-': 0.4,
+        'BBB+': 0.5, 'BBB': 0.55, 'BBB-': 0.6,
+        'BB+': 0.7, 'BB': 0.75, 'BB-': 0.8,
+        'B+': 0.85, 'B': 0.9, 'B-': 0.95, 'CCC': 1.0
+    }
+    
+    # Get credit risk score based on rating
+    credit_rating = counterparty_data['credit_rating']
+    credit_risk = credit_rating_map.get(credit_rating, 0.5)  # Default to 0.5 if rating not found
+    
     risk_values = [
-        max(0.1, min(1.0, 0.2 + 0.8 * (1.1 - float(counterparty_data['credit_rating'][0]) / 10))),  # Credit risk based on rating
+        credit_risk,  # Credit risk based on rating
         max(0.1, min(1.0, counterparty_data['risk_score'] * 0.8 + np.random.uniform(-0.1, 0.1))),  # Market risk
         max(0.1, min(1.0, 0.5 + np.random.uniform(-0.2, 0.2))),  # Liquidity risk
         max(0.1, min(1.0, counterparty_data['risk_score'] * 0.6 + np.random.uniform(-0.1, 0.1))),  # Operational risk

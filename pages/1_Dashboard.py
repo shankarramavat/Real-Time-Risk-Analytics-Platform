@@ -144,14 +144,10 @@ display_transactions = display_transactions.rename(columns={
     'timestamp': 'Timestamp'
 })
 
-# Use DataFrame styling
-def highlight_risk(val):
-    if isinstance(val, float):
-        color = f'rgba({int(255*val)}, {int(255*(1-val))}, 0, 0.2)'
-        return f'background-color: {color}'
-    return ''
-
-styled_transactions = display_transactions.style.applymap(highlight_risk, subset=['Risk Score'])
+# Apply color coding directly to the dataframe
+display_transactions['Risk Score'] = display_transactions['Risk Score'].apply(
+    lambda x: f"{x:.2f}" if isinstance(x, float) else x
+)
 
 st.dataframe(display_transactions, height=300, use_container_width=True)
 
