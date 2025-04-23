@@ -8,9 +8,13 @@ from utils.data_generator import load_data
 from utils.compliance import validate_kyc_compliance, validate_aml_compliance, check_sanctions, generate_compliance_report
 from utils.visualization import plot_compliance_status
 from utils.openai_helper import analyze_compliance_risk
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Compliance", page_icon="✅", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Compliance Monitoring")
 

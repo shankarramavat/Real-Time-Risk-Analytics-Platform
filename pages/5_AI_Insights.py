@@ -7,9 +7,13 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 from utils.data_generator import load_data
 from utils.openai_helper import get_risk_insights, analyze_compliance_risk, generate_market_scenario
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="AI Insights", page_icon="🧠", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("AI-Powered Risk Insights")
 

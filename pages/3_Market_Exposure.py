@@ -7,9 +7,13 @@ from datetime import datetime, timedelta
 from utils.data_generator import load_data
 from utils.risk_calculations import calculate_portfolio_concentration, generate_risk_time_series
 from utils.visualization import plot_time_series
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Market Exposure", page_icon="📈", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Market Exposure Analysis")
 

@@ -3,12 +3,16 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from utils.session_helper import initialize_session_state
 from utils.data_generator import load_data
 from utils.risk_calculations import calculate_counterparty_risk_score, calculate_var, calculate_expected_shortfall
 from utils.visualization import plot_radar_chart, plot_counterparty_network, plot_time_series
 
 # Page config
 st.set_page_config(page_title="Counterparty Risk", page_icon="🔄", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Counterparty Risk Analysis")
 

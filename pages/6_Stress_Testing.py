@@ -8,9 +8,13 @@ from utils.data_generator import load_data
 from utils.risk_calculations import calculate_stress_test_impact, calculate_var, calculate_expected_shortfall
 from utils.visualization import plot_stress_test_results
 from utils.openai_helper import generate_market_scenario
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Stress Testing", page_icon="⚡", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Stress Testing & Scenario Analysis")
 
