@@ -3,6 +3,7 @@ import os
 import pandas as pd
 from datetime import datetime
 from utils.data_generator import generate_sample_data, load_data
+from utils.session_helper import initialize_session_state
 
 # Page configuration
 st.set_page_config(
@@ -13,12 +14,12 @@ st.set_page_config(
 )
 
 # Initialize session state if not already done
-if 'initialized' not in st.session_state:
-    st.session_state.initialized = True
-    st.session_state.last_updated = datetime.now()
-    st.session_state.alert_count = 0
-    # Generate initial data
+initialize_session_state()
+
+# Generate initial data if needed
+if 'data_initialized' not in st.session_state:
     generate_sample_data()
+    st.session_state.data_initialized = True
 
 # Display sidebar logo and navigation
 st.sidebar.title("Risk Analytics Platform")
@@ -90,6 +91,29 @@ with col3:
     - Sanctions screening
     - Regulatory reporting
     """)
+
+# New Features section
+st.header("New Features")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("📱 Mobile Fraud Alerts")
+    st.markdown("""
+    - Real-time SMS notifications for suspicious transactions
+    - Reply via text to confirm or deny transactions
+    - Biometric verification for high-risk activities
+    """)
+    st.markdown("[Try it now →](Mobile_Notifications)")
+
+with col2:
+    st.subheader("🔐 Account Takeover Detection")
+    st.markdown("""
+    - Behavioral biometrics to detect unauthorized access
+    - Device reputation and fingerprinting
+    - Continuous authentication and risk-based security
+    """)
+    st.markdown("[Try it now →](Account_Security)")
 
 # Call to action
 st.markdown("---")

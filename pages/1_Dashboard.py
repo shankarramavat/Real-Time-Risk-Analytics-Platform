@@ -7,9 +7,13 @@ import plotly.graph_objects as go
 from utils.data_generator import load_data
 from utils.risk_calculations import calculate_counterparty_risk_score, generate_risk_time_series
 from utils.visualization import plot_risk_heatmap, plot_time_series, plot_risk_distribution
+from utils.session_helper import initialize_session_state
 
 # Page config
 st.set_page_config(page_title="Dashboard", page_icon="📊", layout="wide")
+
+# Initialize session state
+initialize_session_state()
 
 st.title("Risk Analytics Dashboard")
 
