@@ -1,13 +1,27 @@
 import os
 import json
+import logging
 from openai import OpenAI
+from openai.types.error import APIError, APIConnectionError, RateLimitError
 
 # The newest OpenAI model is "gpt-4o" which was released May 13, 2024.
 # Do not change this unless explicitly requested by the user
 MODEL = "gpt-4o"
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 
-client = OpenAI(api_key=OPENAI_API_KEY)
+# Set up OpenAI client if API key is available
+client = None
+if OPENAI_API_KEY:
+    try:
+        client = OpenAI(api_key=OPENAI_API_KEY)
+    except Exception as e:
+        logging.error(f"Error initializing OpenAI client: {e}")
+        # Continue without OpenAI integration
+
+# Helper function to check if OpenAI integration is available
+def is_openai_available():
+    """Check if OpenAI integration is available and working"""
+    return client is not None and OPENAI_API_KEY != ""
 
 def get_risk_insights(data, context=None):
     """
@@ -20,13 +34,15 @@ def get_risk_insights(data, context=None):
     Returns:
     - Dict containing insights
     """
-    if OPENAI_API_KEY == "":
-        # Return dummy insights if no API key is provided
+    if not is_openai_available():
+        # Return sample insights if OpenAI is not available
         return {
-            "summary": "API key not configured. Please set the OPENAI_API_KEY environment variable.",
+            "summary": "AI insights are not available. Please configure your OpenAI API key.",
             "risk_level": "unknown",
-            "recommendations": ["Configure OpenAI API key to get AI-powered insights."],
-            "key_factors": []
+            "recommendations": ["Visit OpenAI to get an API key.", 
+                              "Set the OPENAI_API_KEY environment variable.",
+                              "Restart the application."],
+            "key_factors": ["Missing API key or quota exceeded"]
         }
     
     try:
@@ -54,20 +70,39 @@ Provide your analysis in the following JSON format:
 """
         
         # Call OpenAI API
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {"role": "system", "content": "You are an expert financial risk analyst."},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.3
-        )
-        
-        # Parse and return the response
-        insight_data = json.loads(response.choices[0].message.content)
-        return insight_data
+        if client:  # Check that client is initialized
+            response = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": "You are an expert financial risk analyst."},
+                    {"role": "user", "content": prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.3
+            )
+            
+            # Parse and return the response
+            insight_data = json.loads(response.choices[0].message.content)
+            return insight_data
+        else:
+            raise Exception("OpenAI client not initialized")
     
+    except RateLimitError as e:
+        print(f"OpenAI rate limit exceeded: {e}")
+        return {
+            "summary": "API rate limit exceeded. Please try again later or upgrade your OpenAI plan.",
+            "risk_level": "unknown",
+            "recommendations": ["Try again later", "Upgrade your OpenAI API plan"],
+            "key_factors": ["API quota exceeded"]
+        }
+    except APIConnectionError as e:
+        print(f"OpenAI connection error: {e}")
+        return {
+            "summary": "Unable to connect to OpenAI API. Please check your internet connection.",
+            "risk_level": "unknown",
+            "recommendations": ["Check your internet connection", "Verify OpenAI API status"],
+            "key_factors": ["API connection error"]
+        }
     except Exception as e:
         print(f"Error getting insights from OpenAI: {e}")
         return {

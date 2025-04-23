@@ -179,11 +179,15 @@ with tabs[0]:
     with col1:
         # Convert timestamps to datetime
         login_df = pd.DataFrame(recent_logins)
-        login_df["timestamp"] = pd.to_datetime(login_df["timestamp"])
-        login_df["date"] = login_df["timestamp"].dt.date
-        
-        # Count logins by date and success
-        login_counts = login_df.groupby(["date", "success"]).size().reset_index(name="count")
+        if "timestamp" in login_df.columns and len(login_df) > 0:
+            login_df["timestamp"] = pd.to_datetime(login_df["timestamp"])
+            login_df["date"] = login_df["timestamp"].dt.date
+            
+            # Count logins by date and success
+            login_counts = login_df.groupby(["date", "success"]).size().reset_index(name="count")
+        else:
+            # Create empty dataframe with required columns
+            login_counts = pd.DataFrame(columns=["date", "success", "count"])
         
         # Create success/failure chart
         login_fig = px.bar(
@@ -231,14 +235,18 @@ with tabs[0]:
     # Geo distribution of logins
     st.subheader("Geographic Distribution of Logins")
     
-    # Count logins by location
-    location_counts = login_df.groupby("location").size().reset_index(name="count")
-    location_success = login_df.groupby("location")["success"].mean().reset_index(name="success_rate")
-    location_risk = login_df.groupby("location")["risk_score"].mean().reset_index(name="avg_risk")
-    
-    # Merge the dataframes
-    location_stats = pd.merge(location_counts, location_success, on="location")
-    location_stats = pd.merge(location_stats, location_risk, on="location")
+    if len(login_df) > 0 and "location" in login_df.columns:
+        # Count logins by location
+        location_counts = login_df.groupby("location").size().reset_index(name="count")
+        location_success = login_df.groupby("location")["success"].mean().reset_index(name="success_rate")
+        location_risk = login_df.groupby("location")["risk_score"].mean().reset_index(name="avg_risk")
+        
+        # Merge the dataframes
+        location_stats = pd.merge(location_counts, location_success, on="location")
+        location_stats = pd.merge(location_stats, location_risk, on="location")
+    else:
+        # Create empty dataframe with required columns
+        location_stats = pd.DataFrame(columns=["location", "count", "success_rate", "avg_risk"])
     
     # Create location map
     loc_fig = px.scatter_geo(
@@ -273,17 +281,21 @@ with tabs[0]:
     # Device distribution
     st.subheader("Login Devices")
     
-    # Count logins by device
-    device_counts = login_df.groupby("device").size().reset_index(name="count")
-    device_success = login_df.groupby("device")["success"].mean().reset_index(name="success_rate")
-    device_risk = login_df.groupby("device")["risk_score"].mean().reset_index(name="avg_risk")
-    
-    # Merge the dataframes
-    device_stats = pd.merge(device_counts, device_success, on="device")
-    device_stats = pd.merge(device_stats, device_risk, on="device")
-    
-    # Sort by count (descending)
-    device_stats = device_stats.sort_values("count", ascending=False)
+    if len(login_df) > 0 and "device" in login_df.columns:
+        # Count logins by device
+        device_counts = login_df.groupby("device").size().reset_index(name="count")
+        device_success = login_df.groupby("device")["success"].mean().reset_index(name="success_rate")
+        device_risk = login_df.groupby("device")["risk_score"].mean().reset_index(name="avg_risk")
+        
+        # Merge the dataframes
+        device_stats = pd.merge(device_counts, device_success, on="device")
+        device_stats = pd.merge(device_stats, device_risk, on="device")
+        
+        # Sort by count (descending)
+        device_stats = device_stats.sort_values("count", ascending=False)
+    else:
+        # Create empty dataframe with required columns
+        device_stats = pd.DataFrame(columns=["device", "count", "success_rate", "avg_risk"])
     
     # Create device bar chart
     device_fig = px.bar(
@@ -532,7 +544,8 @@ with tabs[2]:
         
         with filter_col2:
             # Filter by date range
-            if "timestamp" in login_df.columns:
+            date_range = None
+            if "timestamp" in login_df.columns and not login_df.empty:
                 login_df["timestamp"] = pd.to_datetime(login_df["timestamp"])
                 min_date = login_df["timestamp"].min().date()
                 max_date = login_df["timestamp"].max().date()
@@ -565,7 +578,8 @@ with tabs[2]:
         if success_filter:
             filtered_df = filtered_df[filtered_df["success"].isin(success_filter)]
         
-        if "timestamp" in filtered_df.columns and len(date_range) == 2:
+        # Apply date range filter if defined
+        if "timestamp" in filtered_df.columns and 'date_range' in locals() and len(date_range) == 2:
             start_date, end_date = date_range
             filtered_df = filtered_df[
                 (filtered_df["timestamp"].dt.date >= start_date) & 
