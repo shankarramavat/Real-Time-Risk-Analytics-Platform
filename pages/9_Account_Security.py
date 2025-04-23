@@ -214,23 +214,25 @@ with tabs[0]:
     
     with col2:
         # Login risk distribution
-        risk_fig = px.histogram(
-            login_df,
-            x="risk_score",
-            nbins=20,
-            title="Login Risk Score Distribution",
-            labels={"risk_score": "Risk Score", "count": "Number of Logins"}
-        )
+        if not login_df.empty and "risk_score" in login_df.columns:
+            risk_fig = px.histogram(
+                login_df,
+                x="risk_score",
+                nbins=20,
+                title="Login Risk Score Distribution",
+                labels={"risk_score": "Risk Score", "count": "Number of Logins"}
+            )
+            
+            # Add a vertical line for high risk threshold
+            risk_fig.add_vline(x=0.7, line_dash="dash", line_color="red",
+                             annotation_text="High Risk Threshold", 
+                             annotation_position="top right")
+                
+            st.plotly_chart(risk_fig, use_container_width=True)
+        else:
+            st.info("No risk score data available for visualization.")
         
-        # Add a vertical line for high risk threshold
-        risk_fig.add_vline(
-            x=0.6,
-            line_dash="dash",
-            line_color="red",
-            annotation_text="High Risk Threshold"
-        )
-        
-        st.plotly_chart(risk_fig, use_container_width=True)
+        # Note: Vertical line and chart rendering handled within the if-block above
     
     # Geo distribution of logins
     st.subheader("Geographic Distribution of Logins")
