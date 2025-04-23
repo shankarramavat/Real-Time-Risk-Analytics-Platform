@@ -321,7 +321,8 @@ with ai_tabs[2]:
     if 'recommendations' in analysis:
         recommendations.extend(analysis['recommendations'])
     
-    if len(cp_transactions) > 0 and 'recommendations' in tx_analysis:
+    # Check if tx_analysis is defined before trying to access it
+    if len(cp_transactions) > 0 and 'tx_analysis' in locals() and 'recommendations' in tx_analysis:
         recommendations.extend(tx_analysis['recommendations'])
     
     if recommendations:

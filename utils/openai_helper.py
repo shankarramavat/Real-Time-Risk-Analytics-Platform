@@ -2,7 +2,14 @@ import os
 import json
 import logging
 from openai import OpenAI
-from openai.types.error import APIError, APIConnectionError, RateLimitError
+
+# Define error types for different OpenAI versions
+# This simpler approach works with all OpenAI package versions
+API_ERROR_TYPES = {
+    "rate_limit": ["rate limit", "quota", "capacity", "exceeded"],
+    "connection": ["connection", "network", "timeout"],
+    "auth": ["authentication", "auth", "key", "invalid key"]
+}
 
 # The newest OpenAI model is "gpt-4o" which was released May 13, 2024.
 # Do not change this unless explicitly requested by the user
@@ -87,30 +94,45 @@ Provide your analysis in the following JSON format:
         else:
             raise Exception("OpenAI client not initialized")
     
-    except RateLimitError as e:
-        print(f"OpenAI rate limit exceeded: {e}")
-        return {
-            "summary": "API rate limit exceeded. Please try again later or upgrade your OpenAI plan.",
-            "risk_level": "unknown",
-            "recommendations": ["Try again later", "Upgrade your OpenAI API plan"],
-            "key_factors": ["API quota exceeded"]
-        }
-    except APIConnectionError as e:
-        print(f"OpenAI connection error: {e}")
-        return {
-            "summary": "Unable to connect to OpenAI API. Please check your internet connection.",
-            "risk_level": "unknown",
-            "recommendations": ["Check your internet connection", "Verify OpenAI API status"],
-            "key_factors": ["API connection error"]
-        }
     except Exception as e:
-        print(f"Error getting insights from OpenAI: {e}")
-        return {
-            "summary": f"Error analyzing data: {str(e)}",
-            "risk_level": "unknown",
-            "recommendations": ["Check system logs for error details"],
-            "key_factors": ["API error"]
-        }
+        error_msg = str(e).lower()
+        
+        # Check if this is a rate limit error
+        if any(term in error_msg for term in API_ERROR_TYPES["rate_limit"]):
+            print(f"OpenAI rate limit exceeded: {e}")
+            return {
+                "summary": "API rate limit exceeded. Please try again later or upgrade your OpenAI plan.",
+                "risk_level": "unknown",
+                "recommendations": ["Try again later", "Upgrade your OpenAI API plan"],
+                "key_factors": ["API quota exceeded"]
+            }
+        # Check if this is a connection error
+        elif any(term in error_msg for term in API_ERROR_TYPES["connection"]):
+            print(f"OpenAI connection error: {e}")
+            return {
+                "summary": "Unable to connect to OpenAI API. Please check your internet connection.",
+                "risk_level": "unknown",
+                "recommendations": ["Check your internet connection", "Verify OpenAI API status"],
+                "key_factors": ["API connection error"]
+            }
+        # Check if this is an authentication error
+        elif any(term in error_msg for term in API_ERROR_TYPES["auth"]):
+            print(f"OpenAI authentication error: {e}")
+            return {
+                "summary": "Authentication error with OpenAI API. Please check your API key.",
+                "risk_level": "unknown",
+                "recommendations": ["Verify your OpenAI API key", "Check account status"],
+                "key_factors": ["API authentication error"]
+            }
+        else:
+            # General error handling
+            print(f"Error getting insights from OpenAI: {e}")
+            return {
+                "summary": f"Error analyzing data: {str(e)}",
+                "risk_level": "unknown",
+                "recommendations": ["Check system logs for error details"],
+                "key_factors": ["API error"]
+            }
 
 def analyze_compliance_risk(compliance_data, entity_name=None):
     """
@@ -123,12 +145,12 @@ def analyze_compliance_risk(compliance_data, entity_name=None):
     Returns:
     - Dict containing compliance analysis
     """
-    if OPENAI_API_KEY == "":
-        # Return dummy insights if no API key is provided
+    if not is_openai_available():
+        # Return sample insights if OpenAI is not available
         return {
-            "summary": "API key not configured. Please set the OPENAI_API_KEY environment variable.",
+            "summary": "AI insights are not available. Please configure your OpenAI API key.",
             "compliance_status": "unknown",
-            "risk_factors": ["API key not configured"],
+            "risk_factors": ["API key not configured or quota exceeded"],
             "recommendations": ["Configure OpenAI API key to get AI-powered insights."]
         }
     
@@ -158,28 +180,53 @@ Provide your analysis in the following JSON format:
 """
         
         # Call OpenAI API
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {"role": "system", "content": "You are an expert financial compliance analyst."},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.3
-        )
-        
-        # Parse and return the response
-        analysis_data = json.loads(response.choices[0].message.content)
-        return analysis_data
+        if client:  # Check that client is initialized
+            response = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": "You are an expert financial compliance analyst."},
+                    {"role": "user", "content": prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.3
+            )
+            
+            # Parse and return the response
+            analysis_data = json.loads(response.choices[0].message.content)
+            return analysis_data
+        else:
+            raise Exception("OpenAI client not initialized")
     
     except Exception as e:
-        print(f"Error analyzing compliance with OpenAI: {e}")
-        return {
-            "summary": f"Error analyzing compliance data: {str(e)}",
-            "compliance_status": "unknown",
-            "risk_factors": ["API error"],
-            "recommendations": ["Check system logs for error details"]
-        }
+        error_msg = str(e).lower()
+        
+        # Check if this is a rate limit error
+        if any(term in error_msg for term in API_ERROR_TYPES["rate_limit"]):
+            print(f"OpenAI rate limit exceeded: {e}")
+            return {
+                "summary": "API rate limit exceeded. Please try again later.",
+                "compliance_status": "unknown",
+                "risk_factors": ["API quota exceeded"],
+                "recommendations": ["Try again later", "Upgrade your OpenAI API plan"]
+            }
+        # Check if this is a connection error
+        elif any(term in error_msg for term in API_ERROR_TYPES["connection"]):
+            print(f"OpenAI connection error: {e}")
+            return {
+                "summary": "Unable to connect to OpenAI API.",
+                "compliance_status": "unknown",
+                "risk_factors": ["API connection error"],
+                "recommendations": ["Check your internet connection", "Verify OpenAI API status"]
+            }
+        # General error handling
+        else:
+            print(f"Error analyzing compliance with OpenAI: {e}")
+            return {
+                "summary": f"Error analyzing compliance data: {str(e)}",
+                "compliance_status": "unknown",
+                "risk_factors": ["API error"],
+                "recommendations": ["Check system logs for error details"]
+            }
 
 def generate_market_scenario(scenario_type="recession"):
     """
@@ -191,11 +238,11 @@ def generate_market_scenario(scenario_type="recession"):
     Returns:
     - Dict containing scenario parameters
     """
-    if OPENAI_API_KEY == "":
-        # Return dummy scenario if no API key is provided
+    if not is_openai_available():
+        # Return sample scenario if OpenAI is not available
         return {
-            "scenario_name": "API key not configured",
-            "description": "Please set the OPENAI_API_KEY environment variable.",
+            "scenario_name": "Sample Recession Scenario (API key not configured)",
+            "description": "This is a sample scenario provided when OpenAI integration is not available. Configure your OpenAI API key for AI-generated scenarios.",
             "parameters": {
                 "market_shock": -0.15,
                 "interest_rate_change": 0.02,
@@ -227,29 +274,62 @@ Provide your scenario in the following JSON format:
 """
         
         # Call OpenAI API
-        response = client.chat.completions.create(
-            model=MODEL,
-            messages=[
-                {"role": "system", "content": "You are an expert in financial markets and stress testing."},
-                {"role": "user", "content": prompt}
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.5
-        )
-        
-        # Parse and return the response
-        scenario_data = json.loads(response.choices[0].message.content)
-        return scenario_data
+        if client:  # Check that client is initialized
+            response = client.chat.completions.create(
+                model=MODEL,
+                messages=[
+                    {"role": "system", "content": "You are an expert in financial markets and stress testing."},
+                    {"role": "user", "content": prompt}
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.5
+            )
+            
+            # Parse and return the response
+            scenario_data = json.loads(response.choices[0].message.content)
+            return scenario_data
+        else:
+            raise Exception("OpenAI client not initialized")
     
     except Exception as e:
-        print(f"Error generating scenario with OpenAI: {e}")
-        return {
-            "scenario_name": f"Error: {str(e)}",
-            "description": "An error occurred while generating the scenario.",
-            "parameters": {
-                "market_shock": -0.15,
-                "interest_rate_change": 0.02,
-                "credit_spread_widening": 0.03,
-                "liquidity_reduction": 0.25
+        error_msg = str(e).lower()
+        
+        # Check if this is a rate limit error
+        if any(term in error_msg for term in API_ERROR_TYPES["rate_limit"]):
+            print(f"OpenAI rate limit exceeded: {e}")
+            return {
+                "scenario_name": "API Rate Limit Exceeded",
+                "description": "Unable to generate scenario due to OpenAI API rate limit. Please try again later.",
+                "parameters": {
+                    "market_shock": -0.15,
+                    "interest_rate_change": 0.02,
+                    "credit_spread_widening": 0.03,
+                    "liquidity_reduction": 0.25
+                }
             }
-        }
+        # Check if this is a connection error
+        elif any(term in error_msg for term in API_ERROR_TYPES["connection"]):
+            print(f"OpenAI connection error: {e}")
+            return {
+                "scenario_name": "API Connection Error",
+                "description": "Unable to connect to OpenAI API. Please check your internet connection.",
+                "parameters": {
+                    "market_shock": -0.15,
+                    "interest_rate_change": 0.02,
+                    "credit_spread_widening": 0.03,
+                    "liquidity_reduction": 0.25
+                }
+            }
+        # General error handling
+        else:
+            print(f"Error generating scenario with OpenAI: {e}")
+            return {
+                "scenario_name": f"Error: {str(e)}",
+                "description": "An error occurred while generating the scenario.",
+                "parameters": {
+                    "market_shock": -0.15,
+                    "interest_rate_change": 0.02,
+                    "credit_spread_widening": 0.03,
+                    "liquidity_reduction": 0.25
+                }
+            }

@@ -578,8 +578,8 @@ with tabs[2]:
         if success_filter:
             filtered_df = filtered_df[filtered_df["success"].isin(success_filter)]
         
-        # Apply date range filter if defined
-        if "timestamp" in filtered_df.columns and 'date_range' in locals() and len(date_range) == 2:
+        # Apply date range filter if defined and valid
+        if "timestamp" in filtered_df.columns and 'date_range' in locals() and date_range is not None and isinstance(date_range, tuple) and len(date_range) == 2:
             start_date, end_date = date_range
             filtered_df = filtered_df[
                 (filtered_df["timestamp"].dt.date >= start_date) & 
