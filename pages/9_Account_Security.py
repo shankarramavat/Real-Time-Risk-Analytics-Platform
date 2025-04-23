@@ -251,20 +251,42 @@ with tabs[0]:
         location_stats = pd.DataFrame(columns=["location", "count", "success_rate", "avg_risk"])
     
     # Create location map
-    loc_fig = px.scatter_geo(
-        location_stats,
-        locationmode="country names",
-        # In a real app, these would be actual lat/lon
-        # For demo, we'll use a simplified approach
-        lat=[40.7, 41.9, 32.8, 25.8, 51.5, 48.9, 35.7, -33.9] if len(location_stats) > 1 else [40.7],
-        lon=[-74.0, -87.6, -96.8, -80.2, -0.1, 2.3, 139.8, 151.2] if len(location_stats) > 1 else [-74.0],
-        hover_name="location",
-        size="count",
-        color="avg_risk",
-        color_continuous_scale="RdYlGn_r",
-        size_max=30,
-        hover_data={"count": True, "success_rate": True, "avg_risk": True}
-    )
+    if not location_stats.empty:
+        # Create a mapping of locations to coordinates for simplicity
+        location_to_coords = {
+            "New York, USA": (40.7, -74.0),
+            "Chicago, USA": (41.9, -87.6),
+            "Dallas, USA": (32.8, -96.8),
+            "Miami, USA": (25.8, -80.2),
+            "London, UK": (51.5, -0.1),
+            "Paris, France": (48.9, 2.3),
+            "Tokyo, Japan": (35.7, 139.8),
+            "Sydney, Australia": (-33.9, 151.2)
+        }
+        
+        # Add lat/lon columns
+        location_stats["lat"] = location_stats["location"].apply(
+            lambda loc: location_to_coords.get(loc, (40.7, -74.0))[0]
+        )
+        location_stats["lon"] = location_stats["location"].apply(
+            lambda loc: location_to_coords.get(loc, (40.7, -74.0))[1]
+        )
+        
+        # Create the map
+        loc_fig = px.scatter_geo(
+            location_stats,
+            lat="lat",
+            lon="lon",
+            hover_name="location",
+            size="count" if "count" in location_stats.columns else None,
+            color="avg_risk" if "avg_risk" in location_stats.columns else None,
+            color_continuous_scale="RdYlGn_r",
+            size_max=30,
+            hover_data={col: True for col in location_stats.columns if col not in ["lat", "lon"]}
+        )
+    else:
+        # Create a blank figure if no data
+        loc_fig = px.scatter_geo()
     
     loc_fig.update_layout(
         title="Login Locations",
@@ -300,17 +322,19 @@ with tabs[0]:
         device_stats = pd.DataFrame(columns=["device", "count", "success_rate", "avg_risk"])
     
     # Create device bar chart
-    device_fig = px.bar(
-        device_stats,
-        x="device",
-        y="count",
-        color="avg_risk",
-        hover_data=["success_rate", "avg_risk"],
-        color_continuous_scale="RdYlGn_r",
-        title="Login Devices"
-    )
-    
-    st.plotly_chart(device_fig, use_container_width=True)
+    if not device_stats.empty:
+        device_fig = px.bar(
+            device_stats,
+            x="device",
+            y="count",
+            color="avg_risk" if "avg_risk" in device_stats.columns else None,
+            hover_data=[col for col in ["success_rate", "avg_risk"] if col in device_stats.columns],
+            color_continuous_scale="RdYlGn_r",
+            title="Login Devices"
+        )
+        st.plotly_chart(device_fig, use_container_width=True)
+    else:
+        st.info("No device data available for visualization.")
 
 # Account Takeover Simulation tab
 with tabs[1]:
