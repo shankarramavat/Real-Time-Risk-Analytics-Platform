@@ -1,51 +1,51 @@
 id,counterparty_id,counterparty_name,compliance_type,status,risk_score,last_check_date,next_review_date,notes,flagged
-1,12,Counterparty 12,Regulatory,Compliant,0.12318686982375182,2025-02-13,2025-07-28,Compliance review for Counterparty 12,False
-2,16,Counterparty 16,Internal Policy,Compliant,0.3568546145786874,2025-03-19,2025-11-25,Compliance review for Counterparty 16,False
-3,25,Counterparty 25,KYC,Pending Review,0.6928009947452625,2025-04-08,2025-08-12,Compliance review for Counterparty 25,False
-4,43,Counterparty 43,AML,Non-Compliant,0.7281152239489986,2025-04-16,2025-10-26,Compliance review for Counterparty 43,True
-5,45,Counterparty 45,Regulatory,Compliant,0.345662028269613,2025-02-18,2025-06-12,Compliance review for Counterparty 45,False
-6,43,Counterparty 43,AML,Pending Review,0.5209866067789587,2025-02-18,2025-09-23,Compliance review for Counterparty 43,False
-7,35,Counterparty 35,Internal Policy,Exempt,0.3600663183300574,2025-02-27,2025-11-13,Compliance review for Counterparty 35,False
-8,33,Counterparty 33,Internal Policy,Pending Review,0.40604556521953405,2025-02-26,2025-12-28,Compliance review for Counterparty 33,False
-9,25,Counterparty 25,AML,Pending Review,0.5808657553169879,2025-01-29,2025-06-18,Compliance review for Counterparty 25,False
-10,28,Counterparty 28,AML,Compliant,0.23961100202210972,2025-03-26,2026-01-25,Compliance review for Counterparty 28,False
-11,43,Counterparty 43,Regulatory,Pending Review,0.4967769861162864,2025-03-12,2025-07-11,Compliance review for Counterparty 43,False
-12,40,Counterparty 40,Regulatory,Pending Review,0.46025464421159734,2025-04-16,2026-02-01,Compliance review for Counterparty 40,False
-13,49,Counterparty 49,Sanctions,Compliant,0.382091390029187,2025-04-15,2026-02-25,Compliance review for Counterparty 49,False
-14,20,Counterparty 20,Regulatory,Compliant,0.296587690352885,2025-03-23,2026-02-22,Compliance review for Counterparty 20,False
-15,44,Counterparty 44,AML,Under Investigation,0.88168709904286,2025-01-26,2026-04-05,Compliance review for Counterparty 44,True
-16,47,Counterparty 47,Sanctions,Compliant,0.32117827966600143,2025-02-15,2025-08-05,Compliance review for Counterparty 47,False
-17,50,Counterparty 50,Sanctions,Compliant,0.3168265621720112,2025-02-22,2025-07-23,Compliance review for Counterparty 50,False
-18,38,Counterparty 38,Internal Policy,Compliant,0.28597065907701535,2025-02-03,2025-08-21,Compliance review for Counterparty 38,False
-19,48,Counterparty 48,AML,Compliant,0.1224270056871498,2025-04-16,2025-10-03,Compliance review for Counterparty 48,False
-20,29,Counterparty 29,AML,Compliant,0.34661866069667757,2025-02-10,2025-12-31,Compliance review for Counterparty 29,False
-21,49,Counterparty 49,Sanctions,Compliant,0.36228288813698106,2025-03-10,2026-03-10,Compliance review for Counterparty 49,False
-22,11,Counterparty 11,Sanctions,Compliant,0.10278555844753884,2025-02-13,2026-04-20,Compliance review for Counterparty 11,False
-23,5,Counterparty 5,Internal Policy,Compliant,0.15454325074486247,2025-03-17,2025-11-11,Compliance review for Counterparty 5,False
-24,32,Counterparty 32,Regulatory,Pending Review,0.5516781105073971,2025-03-12,2025-12-22,Compliance review for Counterparty 32,False
-25,3,Counterparty 3,Internal Policy,Compliant,0.3407734534784097,2025-03-22,2025-07-22,Compliance review for Counterparty 3,False
-26,19,Counterparty 19,AML,Compliant,0.2170700949919485,2025-03-03,2025-06-25,Compliance review for Counterparty 19,False
-27,47,Counterparty 47,KYC,Pending Review,0.49336397717867153,2025-03-29,2026-03-23,Compliance review for Counterparty 47,False
-28,45,Counterparty 45,Regulatory,Under Investigation,0.8286090778873554,2025-04-13,2025-11-25,Compliance review for Counterparty 45,False
-29,19,Counterparty 19,Sanctions,Pending Review,0.5679292898864334,2025-03-09,2026-01-13,Compliance review for Counterparty 19,False
-30,37,Counterparty 37,KYC,Compliant,0.3550633248922255,2025-01-27,2025-09-11,Compliance review for Counterparty 37,False
-31,11,Counterparty 11,Internal Policy,Compliant,0.10992629960223058,2025-04-06,2025-11-03,Compliance review for Counterparty 11,False
-32,47,Counterparty 47,Internal Policy,Compliant,0.1831602650045842,2025-02-02,2025-07-28,Compliance review for Counterparty 47,False
-33,47,Counterparty 47,AML,Non-Compliant,0.8472586851540113,2025-02-23,2026-03-20,Compliance review for Counterparty 47,False
-34,24,Counterparty 24,Internal Policy,Compliant,0.22204884667578673,2025-02-01,2025-09-28,Compliance review for Counterparty 24,False
-35,50,Counterparty 50,Regulatory,Exempt,0.28651058266643226,2025-03-23,2025-11-28,Compliance review for Counterparty 50,False
-36,5,Counterparty 5,AML,Compliant,0.10718742650674695,2025-04-20,2025-08-11,Compliance review for Counterparty 5,False
-37,47,Counterparty 47,Regulatory,Pending Review,0.41394136401988674,2025-03-11,2025-07-21,Compliance review for Counterparty 47,False
-38,22,Counterparty 22,KYC,Pending Review,0.504249644116993,2025-03-22,2025-08-19,Compliance review for Counterparty 22,False
-39,16,Counterparty 16,Sanctions,Compliant,0.38646882695304796,2025-01-27,2025-10-08,Compliance review for Counterparty 16,False
-40,27,Counterparty 27,AML,Pending Review,0.6333848861464502,2025-02-05,2025-07-05,Compliance review for Counterparty 27,False
-41,34,Counterparty 34,Regulatory,Pending Review,0.692929683069768,2025-04-20,2026-04-05,Compliance review for Counterparty 34,False
-42,9,Counterparty 9,Regulatory,Compliant,0.13968594611379834,2025-03-20,2025-08-31,Compliance review for Counterparty 9,False
-43,34,Counterparty 34,KYC,Compliant,0.3018541925358085,2025-01-30,2025-09-28,Compliance review for Counterparty 34,False
-44,31,Counterparty 31,KYC,Compliant,0.1855564976580428,2025-03-07,2025-06-16,Compliance review for Counterparty 31,False
-45,17,Counterparty 17,AML,Compliant,0.1808128135645801,2025-02-04,2025-07-16,Compliance review for Counterparty 17,False
-46,21,Counterparty 21,Regulatory,Pending Review,0.5284465572923148,2025-02-18,2025-05-23,Compliance review for Counterparty 21,False
-47,45,Counterparty 45,AML,Pending Review,0.4063881277202238,2025-02-02,2026-02-25,Compliance review for Counterparty 45,False
-48,8,Counterparty 8,KYC,Pending Review,0.5322673128916521,2025-03-28,2026-04-19,Compliance review for Counterparty 8,False
-49,36,Counterparty 36,Internal Policy,Compliant,0.21184452816030985,2025-04-12,2025-09-07,Compliance review for Counterparty 36,False
-50,4,Counterparty 4,Regulatory,Under Investigation,0.8556004761749294,2025-02-14,2026-03-12,Compliance review for Counterparty 4,True
+1,12,Counterparty 12,Regulatory,Compliant,0.12318686982375182,2025-02-14,2025-07-29,Compliance review for Counterparty 12,False
+2,16,Counterparty 16,Internal Policy,Compliant,0.3568546145786874,2025-03-20,2025-11-26,Compliance review for Counterparty 16,False
+3,25,Counterparty 25,KYC,Pending Review,0.6928009947452625,2025-04-09,2025-08-13,Compliance review for Counterparty 25,False
+4,43,Counterparty 43,AML,Non-Compliant,0.7281152239489986,2025-04-17,2025-10-27,Compliance review for Counterparty 43,True
+5,45,Counterparty 45,Regulatory,Compliant,0.345662028269613,2025-02-19,2025-06-13,Compliance review for Counterparty 45,False
+6,43,Counterparty 43,AML,Pending Review,0.5209866067789587,2025-02-19,2025-09-24,Compliance review for Counterparty 43,False
+7,35,Counterparty 35,Internal Policy,Exempt,0.3600663183300574,2025-02-28,2025-11-14,Compliance review for Counterparty 35,False
+8,33,Counterparty 33,Internal Policy,Pending Review,0.40604556521953405,2025-02-27,2025-12-29,Compliance review for Counterparty 33,False
+9,25,Counterparty 25,AML,Pending Review,0.5808657553169879,2025-01-30,2025-06-19,Compliance review for Counterparty 25,False
+10,28,Counterparty 28,AML,Compliant,0.23961100202210972,2025-03-27,2026-01-26,Compliance review for Counterparty 28,False
+11,43,Counterparty 43,Regulatory,Pending Review,0.4967769861162864,2025-03-13,2025-07-12,Compliance review for Counterparty 43,False
+12,40,Counterparty 40,Regulatory,Pending Review,0.46025464421159734,2025-04-17,2026-02-02,Compliance review for Counterparty 40,False
+13,49,Counterparty 49,Sanctions,Compliant,0.382091390029187,2025-04-16,2026-02-26,Compliance review for Counterparty 49,False
+14,20,Counterparty 20,Regulatory,Compliant,0.296587690352885,2025-03-24,2026-02-23,Compliance review for Counterparty 20,False
+15,44,Counterparty 44,AML,Under Investigation,0.88168709904286,2025-01-27,2026-04-06,Compliance review for Counterparty 44,True
+16,47,Counterparty 47,Sanctions,Compliant,0.32117827966600143,2025-02-16,2025-08-06,Compliance review for Counterparty 47,False
+17,50,Counterparty 50,Sanctions,Compliant,0.3168265621720112,2025-02-23,2025-07-24,Compliance review for Counterparty 50,False
+18,38,Counterparty 38,Internal Policy,Compliant,0.28597065907701535,2025-02-04,2025-08-22,Compliance review for Counterparty 38,False
+19,48,Counterparty 48,AML,Compliant,0.1224270056871498,2025-04-17,2025-10-04,Compliance review for Counterparty 48,False
+20,29,Counterparty 29,AML,Compliant,0.34661866069667757,2025-02-11,2026-01-01,Compliance review for Counterparty 29,False
+21,49,Counterparty 49,Sanctions,Compliant,0.36228288813698106,2025-03-11,2026-03-11,Compliance review for Counterparty 49,False
+22,11,Counterparty 11,Sanctions,Compliant,0.10278555844753884,2025-02-14,2026-04-21,Compliance review for Counterparty 11,False
+23,5,Counterparty 5,Internal Policy,Compliant,0.15454325074486247,2025-03-18,2025-11-12,Compliance review for Counterparty 5,False
+24,32,Counterparty 32,Regulatory,Pending Review,0.5516781105073971,2025-03-13,2025-12-23,Compliance review for Counterparty 32,False
+25,3,Counterparty 3,Internal Policy,Compliant,0.3407734534784097,2025-03-23,2025-07-23,Compliance review for Counterparty 3,False
+26,19,Counterparty 19,AML,Compliant,0.2170700949919485,2025-03-04,2025-06-26,Compliance review for Counterparty 19,False
+27,47,Counterparty 47,KYC,Pending Review,0.49336397717867153,2025-03-30,2026-03-24,Compliance review for Counterparty 47,False
+28,45,Counterparty 45,Regulatory,Under Investigation,0.8286090778873554,2025-04-14,2025-11-26,Compliance review for Counterparty 45,False
+29,19,Counterparty 19,Sanctions,Pending Review,0.5679292898864334,2025-03-10,2026-01-14,Compliance review for Counterparty 19,False
+30,37,Counterparty 37,KYC,Compliant,0.3550633248922255,2025-01-28,2025-09-12,Compliance review for Counterparty 37,False
+31,11,Counterparty 11,Internal Policy,Compliant,0.10992629960223058,2025-04-07,2025-11-04,Compliance review for Counterparty 11,False
+32,47,Counterparty 47,Internal Policy,Compliant,0.1831602650045842,2025-02-03,2025-07-29,Compliance review for Counterparty 47,False
+33,47,Counterparty 47,AML,Non-Compliant,0.8472586851540113,2025-02-24,2026-03-21,Compliance review for Counterparty 47,False
+34,24,Counterparty 24,Internal Policy,Compliant,0.22204884667578673,2025-02-02,2025-09-29,Compliance review for Counterparty 24,False
+35,50,Counterparty 50,Regulatory,Exempt,0.28651058266643226,2025-03-24,2025-11-29,Compliance review for Counterparty 50,False
+36,5,Counterparty 5,AML,Compliant,0.10718742650674695,2025-04-21,2025-08-12,Compliance review for Counterparty 5,False
+37,47,Counterparty 47,Regulatory,Pending Review,0.41394136401988674,2025-03-12,2025-07-22,Compliance review for Counterparty 47,False
+38,22,Counterparty 22,KYC,Pending Review,0.504249644116993,2025-03-23,2025-08-20,Compliance review for Counterparty 22,False
+39,16,Counterparty 16,Sanctions,Compliant,0.38646882695304796,2025-01-28,2025-10-09,Compliance review for Counterparty 16,False
+40,27,Counterparty 27,AML,Pending Review,0.6333848861464502,2025-02-06,2025-07-06,Compliance review for Counterparty 27,False
+41,34,Counterparty 34,Regulatory,Pending Review,0.692929683069768,2025-04-21,2026-04-06,Compliance review for Counterparty 34,False
+42,9,Counterparty 9,Regulatory,Compliant,0.13968594611379834,2025-03-21,2025-09-01,Compliance review for Counterparty 9,False
+43,34,Counterparty 34,KYC,Compliant,0.3018541925358085,2025-01-31,2025-09-29,Compliance review for Counterparty 34,False
+44,31,Counterparty 31,KYC,Compliant,0.1855564976580428,2025-03-08,2025-06-17,Compliance review for Counterparty 31,False
+45,17,Counterparty 17,AML,Compliant,0.1808128135645801,2025-02-05,2025-07-17,Compliance review for Counterparty 17,False
+46,21,Counterparty 21,Regulatory,Pending Review,0.5284465572923148,2025-02-19,2025-05-24,Compliance review for Counterparty 21,False
+47,45,Counterparty 45,AML,Pending Review,0.4063881277202238,2025-02-03,2026-02-26,Compliance review for Counterparty 45,False
+48,8,Counterparty 8,KYC,Pending Review,0.5322673128916521,2025-03-29,2026-04-20,Compliance review for Counterparty 8,False
+49,36,Counterparty 36,Internal Policy,Compliant,0.21184452816030985,2025-04-13,2025-09-08,Compliance review for Counterparty 36,False
+50,4,Counterparty 4,Regulatory,Under Investigation,0.8556004761749294,2025-02-15,2026-03-13,Compliance review for Counterparty 4,True
