@@ -211,14 +211,19 @@ def load_data(data_type):
             return pd.read_csv('data/counterparties.csv')
         elif data_type == "transactions":
             return pd.read_csv('data/transactions.csv')
-        elif data_type == "market_data":
+        elif data_type == "market_data" or data_type == "market":
             return pd.read_csv('data/market_data.csv')
         elif data_type == "compliance":
             return pd.read_csv('data/compliance.csv')
         elif data_type == "relationships":
             return pd.read_csv('data/relationships.csv')
         else:
-            raise ValueError(f"Unknown data type: {data_type}")
+            # For unknown data types, generate a simple fallback dataframe
+            print(f"Warning: Unknown data type '{data_type}'. Generating placeholder data.")
+            
+            if data_type == "market":
+                # Generate simple market data
+                return generate_market_data()
     except FileNotFoundError:
         # If file doesn't exist, generate sample data first
         generate_sample_data()
